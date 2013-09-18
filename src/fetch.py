@@ -50,34 +50,58 @@ def retrieveWGSbyaccession(accession, rformat="fasta"):
 
 def retrieveMGRbyaccession(accession, rformat):
 
-    if rformat == "fasta":
-        a = re.search("^(4......\..)$", accession).group(1)
-        if key == "":
-            sys.stderr.write("Warning: MGR webkey not defined\n")
-            s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2/                 > %s.gz"  % ( a, a )
-        else: 
-            sys.stderr.write("Using MGR webkey %s\n" % key)
-            s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2&auth=%s'  > %s.gz" % ( a, key, a )
-            sys.stderr.write("Executing %s\n" % s1) 
-            os.popen(s1)
+    # if rformat == "fasta":
+    a = re.search("^(4......\..)$", accession).group(1)
 
-    elif rformat == "fastq":
+    output = (a + ".gz")
+    #print(output)
 
-        a = re.search("^(4......\..)$", accession).group(1)
-        if key == "":
-            sys.stderr.write("Warning: MGR webkey not defined\n")
-            s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1/                 > %s.gz"  % ( a, a )
+    if key == "":
+        sys.stderr.write("Warning: MGR webkey not defined\n")
+        s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2/                 > %s.gz"  % ( a, a )
+    else: 
+        sys.stderr.write("Using MGR webkey %s\n" % key)
+        s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2&auth=%s'  > %s.gz" % ( a, key, a )
+        sys.stderr.write("Executing %s\n" % s1) 
+        os.popen(s1)
+        
+        with open (output, "r") as myfile:
+            fasta_line=myfile.readline()
+        fasta_check=re.match("not available", fasta_line)
+#        print("fasta_check: %s") % (fasta_check)
+        if fasta_check is None:
+            print("No fasta sequences, checking for fastq.")
+            if key == "":                                                                                                                                                
+                sys.stderr.write("Warning: MGR webkey not defined\n")                                                                                                    
+                s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1/                 > %s.gz"  % ( a, a )                                             
+            else:                                                                                                                                                        
+                sys.stderr.write("Using MGR webkey %s\n" % key)                                                                                                          
+                s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1&auth=%s'  > %s.gz" % ( a, key, a )                                               
+                sys.stderr.write("Executing %s\n" % s1)                                                                                                                  
+                os.popen(s1) 
         else:
-            sys.stderr.write("Using MGR webkey %s\n" % key)
-            s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1&auth=%s'  > %s.gz" % ( a, key, a )
-            sys.stderr.write("Executing %s\n" % s1)
-            os.popen(s1)
-    else:
-        print("Don't recognize format")
-        sys.exit()
+            print("Fasta found")
 
+ #           if re.search("not available", fasta_check):
 
+               # elif rformat == "fastq":
 
+                # a = re.search("^(4......\..)$", accession).group(1)
+ #               if key == "":
+ #                   sys.stderr.write("Warning: MGR webkey not defined\n")
+ #                   s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1/                 > %s.gz"  % ( a, a )
+ #               else:
+ #                   sys.stderr.write("Using MGR webkey %s\n" % key)
+ #                   s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1&auth=%s'  > %s.gz" % ( a, key, a )
+ #                   sys.stderr.write("Executing %s\n" % s1)
+ #                   os.popen(s1)
+            # else:
+            #    print("Don't recognize format")
+            #    sys.exit()
+
+  #      with open ("data.txt", "r") as myfile:
+  #  data=myfile.readline()
+        
 
 def retrieveSRRbyaccession(accession, rformat="fastq"):
     try:
