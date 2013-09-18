@@ -62,13 +62,13 @@ def retrieveMGRbyaccession(accession, rformat="fasta"):
         sys.stderr.write("Warning: MGR webkey not defined\n")
 #        s1 = "curl http://api.metagenomics.anl.gov/sequenceset/mgm%s-050-1/ -D /tmp/fetch-dump > %s.gz"  % ( a, a ) 
 #        s1 = "curl http://api.metagenomics.anl.gov/sequenceset/mgm%s-050-1/                    > %s.gz"  % ( a, a )
-        s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2/                 > %s.fasta"  % ( a, a )
+        s1 = "curl http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2/                 > %s.gz"  % ( a, a )
 
     else: 
         sys.stderr.write("Using MGR webkey %s\n" % key)
 #        s1 = "curl 'http://api.metagenomics.anl.gov/sequenceset/mgm%s-050-1/?&auth=%s' -D /tmp/fetch-dump > %s.gz" % ( a, key, a )
 #        s1 = "curl 'http://api.metagenomics.anl.gov/sequenceset/mgm%s-050-1/?&auth=%s'  > %s.gz" % ( a, key, a )
-        s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2&auth=%s'  > %s.fasta" % ( a, key, a )
+        s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.2&auth=%s'  > %s.gz" % ( a, key, a )
 #    jsonobject = os.popen(s).read()
 #    print jsonobject
     sys.stderr.write("Executing %s\n" % s1) 
