@@ -68,8 +68,8 @@ def retrieveMGRbyaccession(accession, rformat):
         with open (output, "r") as myfile:
             fasta_line=myfile.readline()
         fasta_check=re.match("not available", fasta_line)
-#        print("fasta_check: %s") % (fasta_check)
-        if fasta_check is None:
+        
+        if fasta_check is not None:
             print("No fasta sequences, checking for fastq.")
             if key == "":                                                                                                                                                
                 sys.stderr.write("Warning: MGR webkey not defined\n")                                                                                                    
@@ -78,9 +78,10 @@ def retrieveMGRbyaccession(accession, rformat):
                 sys.stderr.write("Using MGR webkey %s\n" % key)                                                                                                          
                 s1 = "curl 'http://api.metagenomics.anl.gov/1/download/mgm%s?file=050.1&auth=%s'  > %s.gz" % ( a, key, a )                                               
                 sys.stderr.write("Executing %s\n" % s1)                                                                                                                  
-                os.popen(s1) 
+                os.popen(s1)
+                print("Fastq found and downloaded as %s.gz") % (a)
         else:
-            print("Fasta found")
+            print("Fasta found and downloaded into %s.gz") % (a)
 
  #           if re.search("not available", fasta_check):
 
